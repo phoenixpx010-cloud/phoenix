@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Phoenix - Gestión de pedidos">
+  <title>PHOENIX | Pedidos</title>
+  <link rel="icon" type="image/jpeg" href="phoenix-logo.jpeg">
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+  <div class="gold-glow glow-one"></div>
+  <div class="gold-glow glow-two"></div>
+  <div class="gold-line line-one"></div>
+  <div class="gold-line line-two"></div>
+
+  <header class="topbar">
+    <div class="brand-mini">PHOENIX</div>
+    <div class="bar-actions" id="topActions"></div>
+  </header>
+
+  <main class="hero" id="view-home" hidden>
+    <section class="logo-area">
+      <div class="logo-frame">
+        <div class="logo-shine"></div>
+        <img
+          src="phoenix-logo.jpeg"
+          alt="Phoenix - The new concept in covers"
+          class="phoenix-logo"
+        >
+      </div>
+
+      <p class="eyebrow">GESTIÓN DE PEDIDOS</p>
+      <h1>Tu pedido, <span>al siguiente nivel.</span></h1>
+      <p class="subtitle">
+        Crea un nuevo pedido o consulta uno existente de forma rápida y sencilla.
+      </p>
+    </section>
+
+    <section class="actions" aria-label="Opciones principales">
+      <button class="action-card" data-go="nuevo" type="button">
+        <span class="card-number">01</span>
+        <span class="card-icon">＋</span>
+        <span class="card-title">Nuevo pedido</span>
+        <span class="card-text">Crear un pedido</span>
+        <span class="arrow">→</span>
+      </button>
+
+      <button class="action-card" data-go="pedidos" type="button">
+        <span class="card-number">02</span>
+        <span class="card-icon">⌕</span>
+        <span class="card-title">Ver pedido</span>
+        <span class="card-text">Consultar un pedido</span>
+        <span class="arrow">→</span>
+      </button>
+    </section>
+  </main>
+
+  <main class="order-wrap" id="view-nuevo" hidden>
+    <section class="order-head">
+      <p class="eyebrow">NUEVO PEDIDO</p>
+      <h1>Cuéntanos <span>tu diseño.</span></h1>
+      <p class="subtitle">Completa tus datos y describe lo que imaginas para tu carro. Adjunta una imagen de referencia del diseño.</p>
+    </section>
+
+    <form class="order-form" id="orderForm" novalidate>
+      <div class="field">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" type="text" autocomplete="name" placeholder="Ej: Juan Pérez">
+        <span class="error" data-for="nombre"></span>
+      </div>
+
+      <div class="field">
+        <label for="telefono">Teléfono</label>
+        <input id="telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 300 123 4567">
+        <span class="error" data-for="telefono"></span>
+      </div>
+
+      <div class="field">
+        <label for="correo">Correo electrónico</label>
+        <input id="correo" name="correo" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+        <span class="error" data-for="correo"></span>
+      </div>
+
+      <div class="field">
+        <label for="carro">Nombre y modelo del carro</label>
+        <input id="carro" name="carro" type="text" placeholder="Ej: Mazda 3 2021">
+        <span class="error" data-for="carro"></span>
+      </div>
+
+      <div class="field full">
+        <label for="descripcion">Descripción del diseño</label>
+        <textarea id="descripcion" name="descripcion" rows="5" placeholder="Colores, estilo, textos, logos, dónde lo quieres..."></textarea>
+        <span class="error" data-for="descripcion"></span>
+      </div>
+
+      <div class="field full">
+        <label for="imagen">Imagen del diseño</label>
+        <label class="dropzone" id="dropzone" for="imagen">
+          <input id="imagen" name="imagen" type="file" accept="image/*" hidden>
+          <span class="dz-icon">＋</span>
+          <span class="dz-title">Añadir imagen</span>
+          <span class="dz-text">Haz clic o arrastra tu archivo aquí (JPG, PNG, WEBP · máx. 8 MB)</span>
+        </label>
+        <div class="preview" id="preview" hidden>
+          <img id="previewImg" alt="Vista previa del diseño">
+          <div class="preview-info">
+            <span id="previewName"></span>
+            <button type="button" id="removeImg">Quitar</button>
+          </div>
+        </div>
+        <span class="error" data-for="imagen"></span>
+      </div>
+
+      <button class="submit-btn" type="submit" id="submitBtn">Enviar pedido <span>→</span></button>
+    </form>
+
+    <section class="success" id="success" hidden>
+      <div class="success-icon">✓</div>
+      <h2>¡Pedido recibido!</h2>
+      <p class="success-code" id="orderCode"></p>
+      <p class="subtitle">Guarda tu número de pedido para consultarlo después.</p>
+      <div class="success-actions">
+        <button type="button" class="ghost-btn" id="newAgain">Hacer otro pedido</button>
+        <a class="ghost-btn solid" href="#/home">Volver al inicio</a>
+      </div>
+    </section>
+  </main>
+
+  <main class="order-wrap" id="view-login" hidden>
+    <section class="order-head">
+      <p class="eyebrow">ACCESO ADMINISTRATIVO</p>
+      <h1>Iniciar <span>sesión.</span></h1>
+      <p class="subtitle">Ingresa con tu cuenta para ver los pedidos.</p>
+    </section>
+
+    <form class="order-form login-form" id="loginForm" novalidate>
+      <div class="field">
+        <label for="loginCorreo">Correo</label>
+        <input id="loginCorreo" name="correo" type="email" autocomplete="username" placeholder="tucorreo@ejemplo.com" required>
+      </div>
+      <div class="field">
+        <label for="loginClave">Contraseña</label>
+        <input id="loginClave" name="clave" type="password" autocomplete="current-password" placeholder="••••••••" required>
+      </div>
+      <span class="error" id="formError"></span>
+      <button class="submit-btn" type="submit" id="loginSubmit">Entrar <span>→</span></button>
+    </form>
+  </main>
+
+  <main class="order-wrap wide" id="view-pedidos" hidden>
+    <section class="order-head">
+      <p class="eyebrow">PANEL</p>
+      <h1>Tus <span>pedidos.</span></h1>
+      <p class="subtitle" id="count">Cargando pedidos...</p>
+    </section>
+
+    <div class="list-tools">
+      <input class="search" id="search" type="search" placeholder="Buscar por nombre, código, carro, teléfono...">
+    </div>
+
+    <section class="orders" id="orders"></section>
+  </main>
+
+  <footer>
+    <span></span>
+    <p>PHOENIX <b>•</b> THE NEW CONCEPT IN COVERS</p>
+    <span></span>
+  </footer>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="script.js?v=2"></script>
+</body>
+</html>
