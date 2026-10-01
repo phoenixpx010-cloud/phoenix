@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Phoenix - Gestión de pedidos">
+  <title>PHOENIX | Pedidos</title>
+  <link rel="icon" type="image/jpeg" href="phoenix-logo.jpeg">
+  <link rel="stylesheet" href="style.css?v=6">
+</head>
+
+<body>
+  <div class="gold-glow glow-one"></div>
+  <div class="gold-glow glow-two"></div>
+  <div class="gold-line line-one"></div>
+  <div class="gold-line line-two"></div>
+
+  <header class="topbar">
+    <div class="brand-mini">PHOENIX</div>
+    <div class="bar-actions" id="topActions"></div>
+  </header>
+
+  <main class="hero" id="view-home" hidden>
+    <section class="logo-area">
+      <div class="logo-frame">
+        <div class="logo-shine"></div>
+        <img
+          src="phoenix-logo.jpeg"
+          alt="Phoenix - The new concept in covers"
+          class="phoenix-logo"
+        >
+      </div>
+
+      <p class="eyebrow">GESTIÓN DE PEDIDOS</p>
+      <h1>Tu pedido, <span>al siguiente nivel.</span></h1>
+      <p class="subtitle">
+        Crea un nuevo pedido o consulta uno existente de forma rápida y sencilla.
+      </p>
+    </section>
+
+    <section class="actions" aria-label="Opciones principales">
+      <button class="action-card" data-go="nuevo" type="button">
+        <span class="card-number">01</span>
+        <span class="card-icon">＋</span>
+        <span class="card-title">Nuevo pedido</span>
+        <span class="card-text">Crear un pedido</span>
+        <span class="arrow">→</span>
+      </button>
+
+      <button class="action-card" data-go="consultar" type="button">
+        <span class="card-number">02</span>
+        <span class="card-icon">⌕</span>
+        <span class="card-title">Ver pedido</span>
+        <span class="card-text">Consultar un pedido</span>
+        <span class="arrow">→</span>
+      </button>
+    </section>
+  </main>
+
+  <main class="order-wrap" id="view-nuevo" hidden>
+    <section class="order-head">
+      <p class="eyebrow">NUEVO PEDIDO</p>
+      <h1>Cuéntanos <span>tu diseño.</span></h1>
+      <p class="subtitle">Completa tus datos y describe lo que imaginas para tu carro. Adjunta una imagen de referencia del diseño.</p>
+    </section>
+
+    <form class="order-form" id="orderForm" novalidate>
+      <div class="field">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" type="text" autocomplete="name" placeholder="Ej: Juan Pérez">
+        <span class="error" data-for="nombre"></span>
+      </div>
+
+      <div class="field">
+        <label for="telefono">Teléfono</label>
+        <input id="telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 300 123 4567">
+        <span class="error" data-for="telefono"></span>
+      </div>
+
+      <div class="field">
+        <label for="correo">Correo electrónico</label>
+        <input id="correo" name="correo" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+        <span class="error" data-for="correo"></span>
+      </div>
+
+      <div class="field">
+        <label for="carro">Nombre y modelo del carro</label>
+        <input id="carro" name="carro" type="text" placeholder="Ej: Mazda 3 2021">
+        <span class="error" data-for="carro"></span>
+      </div>
+
+      <div class="field full">
+        <label for="descripcion">Descripción del diseño</label>
+        <textarea id="descripcion" name="descripcion" rows="5" placeholder="Colores, estilo, textos, logos, dónde lo quieres..."></textarea>
+        <span class="error" data-for="descripcion"></span>
+      </div>
+
+      <div class="field full">
+        <label for="imagen">Imagen del diseño</label>
+        <label class="dropzone" id="dropzone" for="imagen">
+          <input id="imagen" name="imagen" type="file" accept="image/*" hidden>
+          <span class="dz-icon">＋</span>
+          <span class="dz-title">Añadir imagen</span>
+          <span class="dz-text">Haz clic o arrastra tu archivo aquí (JPG, PNG, WEBP · máx. 8 MB)</span>
+        </label>
+        <div class="preview" id="preview" hidden>
+          <img id="previewImg" alt="Vista previa del diseño">
+          <div class="preview-info">
+            <span id="previewName"></span>
+            <button type="button" id="removeImg">Quitar</button>
+          </div>
+        </div>
+        <span class="error" data-for="imagen"></span>
+      </div>
+
+      <button class="submit-btn" type="submit" id="submitBtn">Enviar pedido <span>→</span></button>
+    </form>
+
+    <section class="success" id="success" hidden>
+      <div class="success-icon">✓</div>
+      <h2>¡Pedido recibido!</h2>
+      <p class="success-code" id="orderCode"></p>
+      <p class="subtitle">Guarda tu número de pedido para consultarlo después.</p>
+      <div class="success-actions">
+        <button type="button" class="ghost-btn" id="newAgain">Hacer otro pedido</button>
+        <a class="ghost-btn solid" href="#/home">Volver al inicio</a>
+      </div>
+    </section>
+  </main>
+
+  <main class="order-wrap" id="view-consultar" hidden>
+    <section class="order-head">
+      <p class="eyebrow">CONSULTAR PEDIDO</p>
+      <h1>Encuentra <span>tu pedido.</span></h1>
+      <p class="subtitle">Escribe el número que recibiste al hacer tu pedido (por ejemplo PHX-AB12CD34).</p>
+    </section>
+
+    <form class="order-form login-form" id="lookupForm" novalidate>
+      <div class="field">
+        <label for="codigoBuscar">Número de pedido</label>
+        <input id="codigoBuscar" name="codigo" type="text" autocomplete="off" placeholder="PHX-XXXXXXXX">
+      </div>
+      <span class="error" id="lookupError"></span>
+      <button class="submit-btn" type="submit" id="lookupBtn">Buscar <span>→</span></button>
+    </form>
+
+    <div id="lookupResult"></div>
+  </main>
+
+  <main class="order-wrap" id="view-login" hidden>
+    <section class="order-head">
+      <p class="eyebrow">ACCESO ADMINISTRATIVO</p>
+      <h1>Iniciar <span>sesión.</span></h1>
+      <p class="subtitle">Ingresa con tu cuenta para ver los pedidos.</p>
+    </section>
+
+    <form class="order-form login-form" id="loginForm" novalidate>
+      <div class="field">
+        <label for="loginCorreo">Correo</label>
+        <input id="loginCorreo" name="correo" type="email" autocomplete="username" placeholder="tucorreo@ejemplo.com" required>
+      </div>
+      <div class="field">
+        <label for="loginClave">Contraseña</label>
+        <input id="loginClave" name="clave" type="password" autocomplete="current-password" placeholder="••••••••" required>
+      </div>
+      <span class="error" id="formError"></span>
+      <button class="submit-btn" type="submit" id="loginSubmit">Entrar <span>→</span></button>
+    </form>
+  </main>
+
+  <div id="view-panel" hidden>
+<div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="ambient ambient-c"></div>
+  <div class="grid-overlay"></div>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+    <div class="sidebar-top">
+      <a class="brand" href="#" aria-label="PHOENIX inicio">
+        <span class="brand-mark"><img src="phoenix-logo.jpeg" alt=""></span>
+        <span class="brand-copy">
+          <strong>PHOENIX</strong>
+          <small>THE NEW CONCEPT IN COVERS</small>
+        </span>
+      </a>
+      <button class="mobile-close" id="mobileClose" type="button" aria-label="Cerrar menú">×</button>
+    </div>
+
+    <div class="sidebar-profile">
+      <div class="avatar" id="profAvatar">A</div>
+      <div>
+        <strong id="profName">Administración</strong>
+        <span id="profSub">Panel interno</span>
+      </div>
+      <span class="online-dot" title="Sesión activa"></span>
+    </div>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      <p class="nav-label">GESTIÓN</p>
+      <button class="nav-item active" type="button" data-section="dashboard">
+        <span class="nav-icon">⌂</span><span>Pedidos</span><em class="nav-count" id="navCount">5</em>
+      </button>
+      <button class="nav-item" type="button" data-section="new-order">
+        <span class="nav-icon">＋</span><span>Nuevo pedido</span>
+      </button>
+
+      <p class="nav-label spaced">DEPARTAMENTOS</p>
+      <button class="nav-item" type="button" data-section="department" data-department="Administración">
+        <span class="nav-icon dept-blue">●</span><span>Administración</span><em class="nav-count muted">5</em>
+      </button>
+      <button class="nav-item" type="button" data-section="department" data-department="Corte">
+        <span class="nav-icon dept-gold">✂</span><span>Corte</span><em class="nav-count muted">5</em>
+      </button>
+      <button class="nav-item" type="button" data-section="department" data-department="Costura">
+        <span class="nav-icon dept-purple">✦</span><span>Costura</span><em class="nav-count muted">4</em>
+      </button>
+      <button class="nav-item" type="button" data-section="department" data-department="Instalación">
+        <span class="nav-icon dept-cyan">⌁</span><span>Instalación</span><em class="nav-count muted">3</em>
+      </button>
+
+      <p class="nav-label spaced">CONTROL</p>
+      <button class="nav-item" type="button" data-section="analytics">
+        <span class="nav-icon">▥</span><span>Resumen</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="status-card">
+        <span class="status-ring">✓</span>
+        <div><strong>Sincronizado en vivo</strong><small>Datos guardados en la nube</small></div>
+      </div>
+      <button class="nav-item logout" type="button" data-go="home"><span class="nav-icon">⌂</span><span>Ir al inicio</span></button>
+      <button class="nav-item logout" type="button" data-logout><span class="nav-icon">⏻</span><span>Cerrar sesión</span></button>
+      <small class="version">PHOENIX · PEDIDOS</small>
+    </div>
+  </aside>
+
+  <div class="main-shell">
+    <header class="p-topbar">
+      <div class="top-left">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Abrir menú" aria-controls="sidebar" aria-expanded="false">☰<span>Menú</span></button>
+        <div>
+          <p class="breadcrumb" id="crumb">ADMINISTRACIÓN <span>/</span> PEDIDOS</p>
+          <h1 id="pageTitle">Pedidos</h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="mobile-summary-btn" id="mobileSummary" type="button" aria-label="Abrir resumen y estadísticas"><span>▥</span><span>Estadísticas</span></button>
+        <div class="live-pill"><i></i> Sistema activo</div>
+        <button class="icon-btn" type="button" id="refreshBtn" title="Actualizar">↻</button>
+        <div class="user-chip">
+          <span class="tiny-avatar" id="chipAvatar">A</span>
+          <div><strong id="chipName">Administración</strong><small id="chipSub">Operador</small></div>
+          <span class="chevron">⌄</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content" id="appContent">
+      <!-- Dashboard -->
+      <section class="section-view active-view" id="section-dashboard" data-view="dashboard">
+        <div class="hero-heading">
+          <div>
+            <p class="p-eyebrow">CENTRO DE CONTROL</p>
+            <h2>Pedidos <span>en movimiento.</span></h2>
+            <p class="section-subtitle">Controla cada trabajo desde la recepción hasta la instalación final.</p>
+          </div>
+          <button class="gold-btn" id="openNewOrder" type="button"><span>＋</span> Nuevo pedido</button>
+        </div>
+
+        <section class="metrics-grid" aria-label="Resumen de pedidos">
+          <article class="metric-card metric-primary">
+            <div class="metric-icon">＋</div>
+            <div class="metric-body"><span>Nuevos pedidos</span><strong id="metricNew">5</strong><small>Esperando revisión</small></div>
+            <div class="metric-spark"><b style="height:38%"></b><b style="height:54%"></b><b style="height:42%"></b><b style="height:73%"></b><b style="height:62%"></b><b style="height:86%"></b><b style="height:70%"></b></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-icon gold">◷</div>
+            <div class="metric-body"><span>En proceso</span><strong id="metricProcess">8</strong><small>Pedidos en departamentos</small></div>
+            <div class="metric-spark"><b style="height:72%"></b><b style="height:58%"></b><b style="height:80%"></b><b style="height:64%"></b><b style="height:88%"></b><b style="height:74%"></b><b style="height:92%"></b></div>
+          </article>
+          <article class="metric-card metric-success">
+            <div class="metric-icon green">✓</div>
+            <div class="metric-body"><span>Terminados</span><strong id="metricDone">21</strong><small>Listos para entregar</small></div>
+            <div class="metric-spark"><b style="height:32%"></b><b style="height:41%"></b><b style="height:59%"></b><b style="height:50%"></b><b style="height:72%"></b><b style="height:66%"></b><b style="height:84%"></b></div>
+          </article>
+          <article class="metric-card metric-neutral">
+            <div class="metric-icon purple">◈</div>
+            <div class="metric-body"><span>Tiempo promedio</span><strong id="metricTime">2.8<span>d</span></strong><small>Desde recepción hasta terminado</small></div>
+            
+          </article>
+        </section>
+
+        <div class="dashboard-layout">
+          <section class="panel orders-panel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-kicker">MONITOREO</span>
+                <h3>Todos los pedidos</h3>
+              </div>
+              <button class="p-ghost-btn" id="clearFilters" type="button">Limpiar filtros</button>
+            </div>
+
+            <div class="toolbar">
+              <label class="searchbox">
+                <span>⌕</span>
+                <input id="searchInput" type="search" placeholder="Buscar cliente, pedido, cédula o vehículo..." autocomplete="off">
+              </label>
+              <div class="segmented" role="tablist" aria-label="Filtrar por estado">
+                <button type="button" class="seg active" data-status="all">Todos</button>
+                <button type="button" class="seg" data-status="Nuevo">Nuevos</button>
+                <button type="button" class="seg" data-status="En proceso">En proceso</button>
+                <button type="button" class="seg" data-status="Terminado">Terminados</button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>PEDIDO</th><th>CLIENTE</th><th>VEHÍCULO</th><th>DEPARTAMENTO</th><th>ESTADO</th><th>FECHA</th><th></th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody"></tbody>
+              </table>
+            </div>
+            <div class="table-foot">
+              <span id="resultsCount">Mostrando 0 pedidos</span>
+              <button class="link-btn" id="showAllBtn" type="button">Ver todos los pedidos →</button>
+            </div>
+          </section>
+
+          <aside class="right-stack">
+            <section class="panel compact-panel">
+              <div class="panel-head mini">
+                <div><span class="panel-kicker">FLUJO</span><h3>Seguimiento general</h3></div>
+                <span class="mini-live">EN VIVO</span>
+              </div>
+              <div class="flow-bars" id="flowBars"></div>
+            </section>
+
+            <section class="panel compact-panel">
+              <div class="panel-head mini">
+                <div><span class="panel-kicker">ACTIVIDAD</span><h3>Últimos movimientos</h3></div>
+              </div>
+              <div class="activity-list" id="activityList"></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Department -->
+      <section class="section-view" id="section-department" data-view="department">
+        <div class="hero-heading">
+          <div>
+            <p class="p-eyebrow" id="deptEyebrow">DEPARTAMENTO</p>
+            <h2 id="deptTitle">Pedidos de <span>Corte.</span></h2>
+            <p class="section-subtitle" id="deptSubtitle">Pedidos que actualmente se encuentran en este departamento.</p>
+          </div>
+          <div class="department-actions">
+            <button class="p-ghost-btn" id="deptPrev" type="button">← Anterior</button>
+            <button class="gold-btn" id="deptNext" type="button">Ver siguiente →</button>
+          </div>
+        </div>
+        <div class="department-summary" id="departmentSummary"></div>
+        <section class="panel">
+          <div class="panel-head">
+            <div><span class="panel-kicker">COLA DE TRABAJO</span><h3 id="deptQueueTitle">Pedidos en este departamento</h3></div>
+            <label class="searchbox small"><span>⌕</span><input id="deptSearch" type="search" placeholder="Buscar en este departamento..."></label>
+          </div>
+          <div class="department-grid" id="departmentGrid"></div>
+        </section>
+      </section>
+
+      <!-- Analytics -->
+      <section class="section-view" id="section-analytics" data-view="analytics">
+        <div class="hero-heading">
+          <div><p class="p-eyebrow">CONTROL</p><h2>Resumen <span>operativo.</span></h2><p class="section-subtitle">Indicadores calculados con los pedidos reales.</p></div>
+        </div>
+        <div class="analytics-grid">
+          <section class="panel chart-panel">
+            <div class="panel-head mini"><div><span class="panel-kicker">DISTRIBUCIÓN</span><h3>Pedidos por etapa</h3></div></div>
+            <div class="donut-row"><div class="donut" id="donut"><div><strong id="donutTotal">0</strong><span>pedidos</span></div></div><div class="legend-list" id="legendList"></div></div>
+          </section>
+          <section class="panel chart-panel">
+            <div class="panel-head mini"><div><span class="panel-kicker">RENDIMIENTO</span><h3>Actividad de la semana</h3></div></div>
+            <div class="week-bars" id="weekBars"></div>
+          </section>
+          <section class="panel full-chart-panel">
+            <div class="panel-head mini"><div><span class="panel-kicker">DEPARTAMENTOS</span><h3>Carga de trabajo</h3></div><span class="small-note">Pedidos activos</span></div>
+            <div class="load-list" id="loadList"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- New order -->
+      <section class="section-view" id="section-new-order" data-view="new-order">
+        <div class="hero-heading">
+          <div><p class="p-eyebrow">RECEPCIÓN</p><h2>Crear <span>nuevo pedido.</span></h2><p class="section-subtitle">Todo pedido nuevo ingresa primero a Administración.</p></div>
+        </div>
+        <form class="panel new-order-form" id="newOrderForm">
+          <div class="form-intro"><span class="form-number">01</span><div><h3>Datos del cliente</h3><p>Registra la información básica para iniciar el trabajo.</p></div></div>
+          <div class="form-grid">
+            <label><span>Nombre completo</span><input name="cliente" required placeholder="Ej. Juan Pérez"></label>
+            <label><span>Teléfono</span><input name="telefono" required placeholder="300 123 4567"></label>
+            <label><span>Vehículo</span><input name="vehiculo" required placeholder="Ej. Mazda 3"></label>
+            <label><span>Año</span><input name="anio" type="number" min="1980" max="2035" placeholder="2021"></label>
+            <label><span>Cédula</span><input name="placa" inputmode="numeric" placeholder="1234567890"></label>
+            <label><span>Prioridad</span><select name="prioridad"><option>Normal</option><option>Alta</option><option>Urgente</option></select></label>
+            <label class="full image-field"><span>Foto / modelo del asiento</span>
+              <div class="image-picker" id="imagePicker">
+                <input id="seatImageInput" name="seatImage" type="file" accept="image/*" hidden>
+                <button class="image-picker-main" id="chooseSeatImage" type="button">
+                  <span class="image-picker-icon">⌁</span>
+                  <span><strong>Seleccionar foto del modelo</strong><small>JPG, PNG, WEBP · hasta 8 MB</small></span>
+                  <b>Elegir imagen</b>
+                </button>
+                <div class="image-preview" id="imagePreview" hidden>
+                  <img id="imagePreviewImg" alt="Vista previa del modelo de asiento">
+                  <div class="image-preview-copy"><strong id="imagePreviewName">Modelo seleccionado</strong><small id="imagePreviewSize"></small></div>
+                  <button class="image-clear" id="clearSeatImage" type="button" aria-label="Quitar foto">×</button>
+                </div>
+              </div>
+            </label>
+            <label class="full"><span>Descripción del trabajo</span><textarea name="descripcion" rows="4" required placeholder="Forrado completo de asientos, paneles de puertas, cabeceras, color, costura, material..."></textarea></label>
+            <label class="full"><span>Detalles adicionales</span><textarea name="detalles" rows="3" placeholder="Antideslizante, combinación de colores, cuidados especiales, etc."></textarea></label>
+          </div>
+          <div class="form-divider"></div>
+          <div class="form-bottom"><div class="info-box"><span>i</span><p>El pedido se creará con estado <strong>Nuevo</strong> y departamento <strong>Administración</strong>.</p></div><button class="gold-btn" type="submit">Crear pedido <span>→</span></button></div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- Detail Drawer -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="order-drawer" id="orderDrawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div><p class="panel-kicker">DETALLE DEL PEDIDO</p><h2 id="drawerCode">#000</h2></div><button class="close-drawer" id="closeDrawer" type="button">×</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-footer" id="drawerFooter"></div>
+  </aside>
+
+  <!-- Confirmation Modal -->
+  <div class="modal-backdrop" id="confirmBackdrop">
+    <div class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <button class="close-drawer" id="closeConfirm" type="button">×</button>
+      <span class="confirm-icon">→</span><p class="panel-kicker">CAMBIAR DE ETAPA</p><h3 id="confirmTitle">Pasar pedido</h3><p id="confirmText">¿Deseas avanzar este pedido?</p>
+      <div class="confirm-actions"><button class="p-ghost-btn" id="cancelMove" type="button">Cancelar</button><button class="gold-btn" id="confirmMove" type="button">Confirmar →</button></div>
+    </div>
+  </div>
+
+  <!-- Delete confirmation -->
+  <div class="modal-backdrop" id="deleteBackdrop">
+    <div class="confirm-modal delete-modal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+      <button class="close-drawer" id="closeDelete" type="button">×</button>
+      <span class="confirm-icon danger-icon">⌫</span><p class="panel-kicker">ELIMINAR PEDIDO</p><h3 id="deleteTitle">Eliminar pedido</h3><p id="deleteText">Esta acción eliminará el pedido de este dispositivo y no se puede deshacer.</p>
+      <div class="confirm-actions"><button class="p-ghost-btn" id="cancelDelete" type="button">Cancelar</button><button class="danger-btn" id="confirmDelete" type="button">Eliminar definitivamente</button></div>
+    </div>
+  </div>
+
+  <div class="p-toast" id="pToast" role="status" aria-live="polite"></div>
+</div>
+
+  <footer>
+    <span></span>
+    <p>PHOENIX <b>•</b> THE NEW CONCEPT IN COVERS</p>
+    <span></span>
+  </footer>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js?v=6"></script>
+</body>
+</html>
