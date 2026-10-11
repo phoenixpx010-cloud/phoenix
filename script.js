@@ -839,7 +839,7 @@ loginForm.addEventListener("submit", async e => {
       doc.setFillColor(...GOLD); doc.rect(0,42,W,1.2,'F');
       if(logo){ const lh=30, lw=lh*logo.w/logo.h; doc.addImage(logo.data,'JPEG',M,6,lw,lh); }
       else { doc.setTextColor(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(26); doc.text('PHOENIX',M,26); }
-      doc.setTextColor(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.text('FACTURA',W-M,18,{align:'right'});
+      doc.setTextColor(...GOLD); doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.text('ORDEN DE PEDIDO',W-M,18,{align:'right'});
       doc.setTextColor(235,235,235); doc.setFont('helvetica','normal'); doc.setFontSize(9);
       doc.text(`Pedido: ${order.id}`,W-M,26,{align:'right'});
       doc.text(`Fecha: ${new Intl.DateTimeFormat('es-CO',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date())}`,W-M,32,{align:'right'});
