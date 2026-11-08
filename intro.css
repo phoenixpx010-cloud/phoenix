@@ -1,0 +1,86 @@
+/* ============================================================
+   PHOENIX · Animación de entrada (archivo independiente)
+   Secuencia: nombre aparece → desaparece → logo aparece →
+   desaparece → se muestra la página (barra superior + opciones)
+   Para cambiar tiempos: edita la duración (s) y delay (s) abajo
+   y END_MS en intro.js.
+   ============================================================ */
+
+/* Oculto por defecto; solo se muestra si intro.js activa .intro-on */
+#intro { display: none; }
+html.intro-on #intro,
+#intro.intro-out { display: flex; }
+
+/* Mientras dura la intro, el resto de la página espera (así sus
+   animaciones originales empiezan justo cuando termina la intro) */
+html.intro-on { overflow: hidden; }
+html.intro-on body > *:not(#intro) { display: none !important; }
+
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(217,164,65,.10), transparent 60%),
+    #030303;
+}
+
+#intro.intro-out { animation: introOut .9s ease forwards; pointer-events: none; }
+
+.intro-name,
+.intro-logo { position: absolute; opacity: 0; }
+
+/* 1) Nombre: aparición progresiva → desaparición progresiva (3.4 s) */
+.intro-name {
+  color: var(--gold-light, #f8df9b);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(38px, 11vw, 112px);
+  font-weight: 700;
+  padding-left: .35em;               /* compensa el letter-spacing para centrar */
+  text-shadow: 0 0 40px rgba(217,164,65,.35);
+  animation: introName 3.4s ease-in-out .3s both;
+}
+
+/* 2) Logo: aparece cuando el nombre ya desapareció (3.2 s) */
+.intro-logo {
+  width: min(620px, 82vw);
+  height: auto;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 58%, transparent 98%);
+          mask-image: radial-gradient(ellipse at center, #000 58%, transparent 98%);
+  animation: introLogo 3.2s ease-in-out 3.9s both;
+}
+
+.intro-skip {
+  position: absolute;
+  top: max(18px, env(safe-area-inset-top));
+  right: 20px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(217,164,65,.35);
+  background: rgba(0,0,0,.35);
+  color: var(--gold-light, #f8df9b);
+  font: 600 11px 'Montserrat', system-ui, sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  animation: introFade .6s ease 1s forwards;
+}
+.intro-skip:hover { border-color: var(--gold-light, #f8df9b); }
+
+@keyframes introName {
+  0%   { opacity: 0; letter-spacing: .55em; filter: blur(12px); transform: scale(.96); }
+  40%  { opacity: 1; letter-spacing: .32em; filter: blur(0);    transform: scale(1); }
+  68%  { opacity: 1; letter-spacing: .30em; filter: blur(0);    transform: scale(1.01); }
+  100% { opacity: 0; letter-spacing: .28em; filter: blur(8px);  transform: scale(1.03); }
+}
+@keyframes introLogo {
+  0%   { opacity: 0; transform: scale(.94); filter: brightness(.5) blur(8px); }
+  40%  { opacity: 1; transform: scale(1);   filter: brightness(1.05) blur(0); }
+  70%  { opacity: 1; transform: scale(1.015); filter: brightness(1) blur(0); }
+  100% { opacity: 0; transform: scale(1.04); filter: brightness(.7) blur(6px); }
+}
+@keyframes introFade { to { opacity: 1; } }
+@keyframes introOut  { to { opacity: 0; visibility: hidden; } }
