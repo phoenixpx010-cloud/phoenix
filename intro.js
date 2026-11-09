@@ -3,7 +3,7 @@
 (function () {
   // ----- Ajustes -----
   var ONCE_PER_SESSION = false;  // true = solo la primera vez que entra (en esa pestaña)
-  var END_MS  = 6900;            // cuándo termina la intro (nombre 0.3–3.7 s, logo 3.9–7.1 s)
+  var END_MS  = 10300;           // cuándo termina la intro (asientos 0.2–10.4 s, nombre 3–6.6 s, logo 6.9–10.1 s)
   var FADE_MS = 900;             // duración del desvanecido final
 
   var html = document.documentElement;
